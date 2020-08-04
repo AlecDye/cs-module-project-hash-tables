@@ -93,14 +93,14 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # 5381 & 33 are prime numbers
-        hashed_var = 5381
+        # hashed_var = 5381
 
-        string_bytes = s.encode()
+        # string_bytes = s.encode()
 
-        for b in string_bytes:
-            hash_var = ((hash_var << 5) + hash_var) + b
+        # for b in string_bytes:
+        #     hash_var = ((hash_var << 5) + hash_var) + b
 
-        return hash_var
+        # return hash_var
 
     def hash_index(self, key):
         """
@@ -118,8 +118,11 @@ class HashTable:
 
         Implement this.
         """
-        item = self.hash_index(key)
-        self.storage[item] = value
+        index = self.hash_index(key)
+        self.storage[index] = value
+
+        # init linked list at index position
+        # if collision -> reassign to either head or tail
 
     def delete(self, key):
         """
@@ -129,9 +132,15 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
-        item = self.hash_index(key)
-        self.storage[item] = None
+
+        if key:
+
+            index = self.hash_index(key)
+            self.storage[index] = None
+
+        else:
+            print("key not found")
+        # add print warning if key not found
 
     def get(self, key):
         """
@@ -142,8 +151,8 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        item = self.hash_index(key)
-        return self.storage[item]
+        index = self.hash_index(key)
+        return self.storage[index]
 
     def resize(self, new_capacity):
         """
