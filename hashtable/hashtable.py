@@ -56,7 +56,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        # load factor = # of items in hash table / total # of slots (capacity)
         pass
 
     def fnv1(self, key):
@@ -74,6 +74,17 @@ class HashTable:
             self.hash = self.hash ^ ord(character)
 
         return self.hash
+        # FNV_offset_basis = 14695981039346656037
+        # FNV_prime = 1099511628211
+
+        # hashed_var = FNV_offset_basis
+
+        # string_bytes = s.encode()
+
+        # for b in string_bytes:
+        #     hashed_var = hashed_var * FNV_prime
+        #     hashed_var = hashed_var ^ b
+        # return hashed_var
 
     def djb2(self, key):
         """
@@ -81,13 +92,15 @@ class HashTable:
 
         Implement this, and/or FNV-1.
         """
-        # Your code here
         # 5381 & 33 are prime numbers
-        # http://www.goodmath.org/blog/2013/10/20/basic-data-structures-hash-tables/
-        # hash = 5381
-        # for i in key:
-        #     hash = ((hash << 5) + hash) + ord(i)
-        # return hash & 0xFFFFFFFF
+        hashed_var = 5381
+
+        string_bytes = s.encode()
+
+        for b in string_bytes:
+            hash_var = ((hash_var << 5) + hash_var) + b
+
+        return hash_var
 
     def hash_index(self, key):
         """
