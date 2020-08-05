@@ -39,7 +39,6 @@ class HashTable:
         else:
             self.capacity = MIN_CAPACITY
 
-        # self.storage = [None] * capacity
         self.storage = [LinkedList()] * capacity
         self.count = 0
 
@@ -148,15 +147,40 @@ class HashTable:
 
         Implement this.
         """
+        # this probably deletes the entire linked list, refactor to empty linked list or check for none
+
+        import math
+
+        load = self.get_load_factor()
+        if load < 0.2:
+            current_capacity = self.get_num_slots()
+            new_capacity = math.ceil(current_capacity * 0.5)
+            if new_capacity < MIN_CAPACITY:
+                new_capacity = MIN_CAPACITY
+            self.resize(new_capacity)
+
+        index = self.hash_index(key)
+        current = self.storage[index].head
 
         if key:
-
-            index = self.hash_index(key)
-            self.storage[index] = None
-
+            while current:
+                if current.key == key:
+                    current.value = None
+                current = current.next
         else:
             print("key not found")
-        # add print warning if key not found
+
+        # if key:
+        #     # like in put need a while loop to match the keys
+        #     # set value to None
+        #     # update capacity
+        #     index = self.hash_index(key)
+        #     self.storage[index] = None
+        #     self.count -= 1
+
+        # else:
+        #     print("key not found")
+        # # add print warning if key not found
 
     def get(self, key):
         """
@@ -183,8 +207,29 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
-        pass
+        # copy "old" storage to variable
+        # hint: just a few lines of code
+        # init empty [LinkedList()] * "new_capacity"
+        # for each LL in old array -> nested while loop (if next node? copy / paste all nodes)
+        # update count
+        # if < get_load_size (0.7) then call resize func (use in put and delete functions)
+        self.capacity = new_capacity
+        new_storage = [None] * new_capacity
+
+        for i in self.storage:
+            if i is not None:
+                current = i.head
+                while current is not None:
+                    a = self.hash_index(current.key)
+                    if new_storage[a] is None:
+                        linked = LinkedList()
+                        linked.head = current
+                        new_storage[a] = linked
+                    else:
+                        new_storage[a].insert_at_head(current)
+                    current = current.next
+        self.storage = new_storage
+        return
 
 
 if __name__ == "__main__":
