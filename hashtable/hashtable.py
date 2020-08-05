@@ -1,3 +1,9 @@
+import sys
+
+sys.path.append("../hashtable/linked_list")
+from linked_list import LinkedList
+
+
 class HashTableEntry:
     """
     Linked List hash table key/value pair
@@ -33,7 +39,9 @@ class HashTable:
         else:
             self.capacity = MIN_CAPACITY
 
-        self.storage = [None] * capacity
+        # self.storage = [None] * capacity
+        self.storage = [LinkedList()] * capacity
+        self.count = 0
 
     def get_num_slots(self):
         """
@@ -57,7 +65,7 @@ class HashTable:
         Implement this.
         """
         # load factor = # of items in hash table / total # of slots (capacity)
-        pass
+        return self.count / self.capacity
 
     def fnv1(self, key):
         """
@@ -119,7 +127,15 @@ class HashTable:
         Implement this.
         """
         index = self.hash_index(key)
-        self.storage[index] = value
+        current = self.storage[index].head
+        while current:
+            if current.key == key:
+                current.value = value
+            current = current.next
+
+        node = HashTableEntry(key, value)
+        self.storage[index].insert_at_head(node)
+        self.count += 1
 
         # init linked list at index position
         # if collision -> reassign to either head or tail
@@ -152,7 +168,13 @@ class HashTable:
         """
         # Your code here
         index = self.hash_index(key)
-        return self.storage[index]
+        current = self.storage[index].head
+        while current:
+            if current.key == key:
+                return current.value
+            current = current.next
+
+        return None
 
     def resize(self, new_capacity):
         """
