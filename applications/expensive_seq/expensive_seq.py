@@ -1,8 +1,9 @@
 # Your code here
-cache = {}
 
 # hint: In Python, a dict key can be any immutable type... including a
 # tuple.
+
+cache = {}
 
 
 def expensive_seq(x, y, z):
@@ -17,6 +18,7 @@ def expensive_seq(x, y, z):
                 + expensive_seq(x - 2, x + 2, z * 2)
                 + expensive_seq(x - 3, y + 3, z * 3)
             )
+
     return cache[tup]
 
 
